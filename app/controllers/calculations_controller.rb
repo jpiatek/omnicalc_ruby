@@ -17,7 +17,7 @@ class CalculationsController < ApplicationController
 
     @word_count = @text.split.count
 
-    @occurrences = @text.split.count(@special_word)
+    @occurrences = @text.gsub(".","").gsub("?","").gsub(",","").gsub("!","").split.count(@special_word)
 
   end
 
@@ -33,7 +33,7 @@ class CalculationsController < ApplicationController
     # The principal value the user input is in the decimal @principal.
     # ================================================================================
 
-    @monthly_payment = "Replace this string with your answer."
+    @monthly_payment = ((@apr/100/12)*(@principal))/(1-(1+@apr/100/12)**-(@years*12))
   end
 
   def time_between
@@ -49,35 +49,44 @@ class CalculationsController < ApplicationController
     #   number of seconds as a result.
     # ================================================================================
 
-    @seconds = "Replace this string with your answer."
-    @minutes = "Replace this string with your answer."
-    @hours = "Replace this string with your answer."
-    @days = "Replace this string with your answer."
-    @weeks = "Replace this string with your answer."
-    @years = "Replace this string with your answer."
+    @seconds = @ending-@starting
+    @minutes = (@ending-@starting)/60
+    @hours = (@ending-@starting)/60/60
+    @days = (@ending-@starting)/60/60/24
+    @weeks = (@ending-@starting)/60/60/24/7
+    @years = (@ending-@starting)/60/60/24/7/52
   end
 
   def descriptive_statistics
     @numbers = params[:list_of_numbers].gsub(',', '').split.map(&:to_f)
+    0
 
     # ================================================================================
     # Your code goes below.
     # The numbers the user input are in the array @numbers.
     # ================================================================================
 
-    @sorted_numbers = "Replace this string with your answer."
+    @sorted_numbers = @numbers.sort
 
-    @count = "Replace this string with your answer."
+    @count = @numbers.count
 
-    @minimum = "Replace this string with your answer."
+    @minimum = @sorted_numbers[0]
 
-    @maximum = "Replace this string with your answer."
+    @maximum = @sorted_numbers.last
 
-    @range = "Replace this string with your answer."
+    @range = @maximum-@minimum
 
-    @median = "Replace this string with your answer."
+    @median =
+        if #odd#
+        @count%2 != 0
+        @sorted_numbers[(@count)/2]
+        else #even#
+        @count%2 ==0
+        (@sorted_numbers[(@count/2)-1]+@sorted_numbers[@count/2])/2
+        end
 
-    @sum = "Replace this string with your answer."
+
+    @sum = @count
 
     @mean = "Replace this string with your answer."
 
